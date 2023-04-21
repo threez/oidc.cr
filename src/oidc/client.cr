@@ -15,7 +15,7 @@ class OIDC::Client < OAuth2::Client
     @config = self.class.get_wellknown(@url)
     super(@config.issuer, client_id, client_secret,
       authorize_uri: @config.authorization_endpoint,
-      token_uri: @config.token_endpoint,
+      token_uri: @config.token_endpoint.not_nil!,
       redirect_uri: redirect_uri)
   end
 
@@ -27,7 +27,7 @@ class OIDC::Client < OAuth2::Client
   def user_info(access_token : OAuth2::AccessToken, *, user_info_class = UserInfo)
     client = http_client
     access_token.authenticate(client)
-    req = client.post(@config.userinfo_endpoint, headers: DEFAULT_HEADERS.dup)
+    req = client.post(@config.userinfo_endpoint.not_nil!, headers: DEFAULT_HEADERS.dup)
 
     if req.status_code != 200
       raise Error.new("#{req.status} #{req.body}")
