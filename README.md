@@ -19,7 +19,7 @@ OIDC client for crystal extends the regular `OAuth2::Client`.
 ```crystal
 require "oidc"
 
-client = OIDC::Client.new("http://example.com/", "client-id", "ALSJDHJKASHGDJHGASKDJG)
+client = OIDC::Client.new("http://example.com/", "client-id", "ALSJDHJKASHGDJHGASKDJG")
 
 # use the client to get authorize uri
 state = UUID.random
