@@ -1,4 +1,4 @@
-# oidc
+# oidc [![.github/workflows/ci.yml](https://github.com/threez/oidc.cr/actions/workflows/ci.yml/badge.svg)](https://github.com/threez/oidc.cr/actions/workflows/ci.yml) [![https://threez.github.io/oidc.cr/](https://badgen.net/badge/api/documentation/green)](https://threez.github.io/oidc.cr/)
 
 OIDC client for crystal extends the regular `OAuth2::Client`.
 
