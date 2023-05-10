@@ -5,6 +5,11 @@ require "json"
 class OIDC::Client < OAuth2::Client
   getter config : OIDC::Configuration
 
+  DEFAULT_HEADERS = HTTP::Headers{
+    "Accept"     => "application/json",
+    "User-Agent" => "oidc.cr/#{VERSION} Crystal/#{Crystal::VERSION}",
+  }
+
   def self.get_wellknown(url : String) : Configuration
     response = HTTP::Client.get(url)
     raise Error.new("unable to get #{url}") if response.status_code != 200
