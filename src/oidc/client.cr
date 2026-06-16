@@ -18,9 +18,10 @@ class OIDC::Client < OAuth2::Client
 
   def initialize(@url : String, client_id : String, client_secret : String, *, redirect_uri : String)
     @config = self.class.get_wellknown(@url)
+    token_uri = @config.token_endpoint || raise Error.new("no token_endpoint in #{@url}")
     super(@config.issuer, client_id, client_secret,
       authorize_uri: @config.authorization_endpoint,
-      token_uri: @config.token_endpoint.not_nil!,
+      token_uri: token_uri,
       redirect_uri: redirect_uri)
   end
 
@@ -32,7 +33,8 @@ class OIDC::Client < OAuth2::Client
   def user_info(access_token : OAuth2::AccessToken, *, user_info_class = UserInfo)
     client = http_client
     access_token.authenticate(client)
-    req = client.post(@config.userinfo_endpoint.not_nil!, headers: DEFAULT_HEADERS.dup)
+    userinfo_endpoint = @config.userinfo_endpoint || raise Error.new("no userinfo_endpoint in #{@url}")
+    req = client.post(userinfo_endpoint, headers: DEFAULT_HEADERS.dup)
 
     if req.status_code != 200
       raise Error.new("#{req.status} #{req.body}")
